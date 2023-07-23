@@ -68,6 +68,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
+builder.Services.AddHealthChecks();
 builder.Services.AddTransient(typeof(IDBConfiguration), typeof(MSSQLConfiguration));
 builder.Services.AddTransient(typeof(IDB), typeof(MSSQLContext));
 
@@ -85,6 +86,8 @@ builder.Services.AddScoped<ILoginUser, LoginUser>();
 builder.Services.AddScoped<IFindUser, FindUser>();
 
 var app = builder.Build();
+
+app.MapHealthChecks("/healthz");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
