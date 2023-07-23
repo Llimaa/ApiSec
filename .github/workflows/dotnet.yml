@@ -1,0 +1,30 @@
+name: ApiSec
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+    - main
+    
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version:  '7.x'
+          
+      - name: Restore
+        run: dotnet restore ./ApiSec.sln
+        
+      - name: Build
+        run: dotnet build ./ApiSec.sln --configuration Release --no-restore
+        
+      - name: Publish
+        run: dotnet publish ./ApiSec.sln --configuration Release --no-build
+    
+    
